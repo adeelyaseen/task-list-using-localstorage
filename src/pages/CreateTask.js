@@ -26,8 +26,8 @@ export const CreateTask = () => {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState(() => {
     const taskLists = localStorage.getItem("tasks");
-    const initialState = JSON.parse(taskLists);
-    return initialState || [];
+    const initialList = JSON.parse(taskLists);
+    return initialList || [];
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -41,33 +41,28 @@ export const CreateTask = () => {
   const handleInput = (e) => {
     setTask(e.target.value);
   };
-  const addTask = (task) => {
-    setTasks([...tasks, task]);
-  };
-  const handleSubmit = (e) => {
+  const addTask = (e) => {
     e.preventDefault();
-    if (task === "") {
-      setError("Task Field should not be empty");
-      setTimeout(() => {
-        setError("");
-      }, 2000);
-    } else {
-      let newTask = {
-        id: uuid(),
-        task: task,
-      };
-      addTask(newTask);
+    if (task) {
+      const newTask = { id: uuid(), task: task };
+      setTasks([...tasks, newTask]);
+      localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]));
       setTask("");
       setSuccess("Task added successfully");
       setTimeout(() => {
         setSuccess("");
         navigator("/list-tasks");
-      }, 2000);
+      }, 1000);
+    } else {
+      setError("Task Field should not be empty");
+      setTimeout(() => {
+        setError("");
+      }, 1000);
     }
   };
 
   return (
-    <div className="ml-4">
+    <div className="p-4">
       <label>
         <h1>Task</h1>
         <input
@@ -77,11 +72,11 @@ export const CreateTask = () => {
           onChange={handleInput}
           placeholder="Write your task here"
         />
+        {error && <Error>{error}</Error>}
+        {success && <Success>{success}</Success>}
       </label>
-      <Error>{error}</Error>
-      <Success>{success}</Success>
       <br />
-      <Button onClick={handleSubmit}> Save</Button>
+      <Button onClick={addTask}>Save</Button>
     </div>
   );
 };

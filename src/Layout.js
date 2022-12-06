@@ -22,9 +22,8 @@ export const Layout = () => {
           <li>
             <Link to="/">Home</Link>
           </li>
-
           <li>
-            <Link to="/bulk-delete">Bulk Delete</Link>
+            <Link to="/bulk-delete">Delete Tasks</Link>
           </li>
         </UL>
       </Nav>
