@@ -75,9 +75,11 @@ export const TaskList = () => {
   const deleteTasks = () => {
     let data = tasks.filter((item) => !selectedTask.includes(item.id));
     setTasks(data);
+
     setMessage("Tasks Deleted Successfully");
     setTimeout(() => {
       setMessage("");
+      setSelectedTask([]);
     }, 1000);
   };
   return (
